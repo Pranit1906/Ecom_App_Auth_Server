@@ -1,8 +1,7 @@
 const dbConnection = require('./dbConnections');
-const tokenCreation = require('../Models/userToken.model');
+const {tokenCreation} = require('../Models/userToken.model');
 const { Op } = require('sequelize');
-
-const UserToken = tokenCreation(dbConnection.connections, dbConnection.DataTypes);
+const UserToken = tokenCreation(dbConnection.connection, dbConnection.DataTypes);
 
  exports.addToken = async(userToken)=>{
     return await UserToken.create({
@@ -13,7 +12,7 @@ const UserToken = tokenCreation(dbConnection.connections, dbConnection.DataTypes
 }
 
 exports.isTokenValid = async(userToken)=>{
-    const storedToken = await UserToken.findOne({
+    const storedToken = await UserToken.findAll({
         where:{
             [Op.and]:[
                 {
@@ -25,4 +24,8 @@ exports.isTokenValid = async(userToken)=>{
         }
     });
     return !storedToken ? false : true;
+}
+
+exports.userTokenTable = async(forceCreation)=>{
+    return await UserToken.sync({force: forceCreation});
 }

@@ -5,11 +5,11 @@ module.exports = {
     USER:'root',
     PASSWORD:'pranitD@1906',
     DB: 'ecom_db',
-    dialect: 'mysql',
+    dialect: "mysql",
     pool:{
-        min:0,
-        max:5,
-        acquire:30000,
-        idle:10000
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
     }
 }

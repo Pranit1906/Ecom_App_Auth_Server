@@ -4,8 +4,8 @@ const connections = new Sequelize(
     config.DB,
     config.USER,
     config.PASSWORD,{
+        host: config.HOST,
         dialect: config.dialect,
-        HOST: config.HOST,
         pool:{
             max:config.pool.max,
             min:config.pool.min,
@@ -15,6 +15,6 @@ const connections = new Sequelize(
     });
 
 module.exports = {
-    connections:connections,
+    connection: connections,
     DataTypes: DataTypes
 }
