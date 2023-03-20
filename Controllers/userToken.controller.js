@@ -45,7 +45,7 @@ exports.refreshAccessToken = (req, res) => {
         refreshToken: req.body.refreshToken
     })
     .then(result=>{
-        console.log(result);
+        //console.log(result);
         if(result){
             return res.status(200).send({
                 accessToken: getAccessToken({
@@ -84,7 +84,7 @@ exports.validateAccessTokens = (req, res)=>{
                 message:'Forbidden, Invalid or Expired Token'
             })
         }
-        return res.status(200).send(payload);
+        return res.status(200).send(payload.data);
 
     })
 }
