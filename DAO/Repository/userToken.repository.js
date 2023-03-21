@@ -17,7 +17,8 @@ exports.isTokenValid = async(userToken)=>{
             [Op.and]:[
                 {
                 userName: userToken.userName
-                },{
+                },
+                {
                 refreshToken: userToken.refreshToken
                 }
             ]

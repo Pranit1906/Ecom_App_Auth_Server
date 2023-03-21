@@ -12,7 +12,7 @@ exports.accessToken = (req, res)=>{
         refreshToken: refreshToken
     })
     .then(result=>{
-        console.log('TOken has been Saved in Db SuccessFully!',result);
+        console.log('TOken has been Saved in Db SuccessFully!');
         res.status(200).send({
             accessToken:accessToken,
             refreshToken: refreshToken
@@ -31,7 +31,7 @@ exports.refreshAccessToken = (req, res) => {
     //2. the refreshToken
     const accessToken = req.body.accessToken;
     const decodedToken = jwt.decode(accessToken);
-    console.log(decodedToken);
+    //console.log(decodedToken);
 
    /*
     if(decodedToken.exp < Date.now()){
@@ -49,8 +49,8 @@ exports.refreshAccessToken = (req, res) => {
         if(result){
             return res.status(200).send({
                 accessToken: getAccessToken({
-                    userName: result.userName,
-                    permission: result.permission
+                    userName: decodedToken.userName,
+                    permission: decodedToken.permission
                 }),
                 refreshToken: req.body.refreshToken
             })
@@ -69,10 +69,10 @@ exports.refreshAccessToken = (req, res) => {
 
 exports.validateAccessTokens = (req, res)=>{
     const authHeader = req.headers['authorization']
-    if(typeof authHeader === 'string'){
+    // if(typeof authHeader === 'string'){
         var token = authHeader.split(' ')[1];
-    }
-    console.log(token)
+    // }
+   // console.log(token)
     if(!token){
         return res.status(401).send({
             message:'Unauthorized, Token Not Found!'
@@ -84,7 +84,7 @@ exports.validateAccessTokens = (req, res)=>{
                 message:'Forbidden, Invalid or Expired Token'
             })
         }
-        return res.status(200).send(payload.data);
+        res.status(200).send(payload);
 
     })
 }
@@ -92,7 +92,7 @@ exports.validateAccessTokens = (req, res)=>{
 
 const getAccessToken = (payload) => {
 const jitter = parseInt(Math.random()*120); //2min gap creation
-const expireIn = 600 + jitter;//10min + (2 min buffer);
+const expireIn = (600*60) + jitter;//10min + (2 min buffer);
 return jwt.sign(payload, authConfig.ACCESS_TOKEN_SECRET, {expiresIn:`${expireIn}s`});
 }
 
